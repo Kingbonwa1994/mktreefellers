@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import Loading from "./loading";
+import StickyFooter from "@/components/Footer";
 
 async function getPosts() {
   const query = `
@@ -39,7 +40,7 @@ export default async function PostList() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className=" min-h-screen bg-[#0A5868] flex flex-col justify-between">
+      <div className=" min-h-screen bg-[#0A5868] flex flex-col justify-between shadow-2xl">
         {posts.map((post) => (
           <div key={post.uri} className="card">
             <Link href={`/post/${post.uri}`}>
@@ -52,6 +53,7 @@ export default async function PostList() {
             </Link>
           </div>
         ))}
+        <StickyFooter />
       </div>
     </Suspense>
   );
