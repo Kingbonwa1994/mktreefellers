@@ -1,7 +1,10 @@
+
 import Link from "next/link";
 import { Suspense } from "react";
 import Loading from "./loading";
-import StickyFooter from "@/components/Footer";
+import Header from "@/components/Header";
+//import Footer from "@/components/Footer";
+
 
 async function getPosts() {
   const query = `
@@ -39,6 +42,9 @@ export default async function PostList() {
   const posts = await getPosts();
 
   return (
+    <div>
+
+    <Header />
     <Suspense fallback={<Loading />}>
       <div className=" min-h-screen bg-[#0A5868] flex flex-col justify-between shadow-2xl">
         {posts.map((post) => (
@@ -53,8 +59,14 @@ export default async function PostList() {
             </Link>
           </div>
         ))}
-        <StickyFooter />
+        
+    
+        
       </div>
+      
     </Suspense>
+    
+    {/* <Footer /> */}
+    </div>
   );
 }
