@@ -13,7 +13,7 @@ const Questionnaire = () => {
   const questions = [
     {
       question: 'What is the size of the project?',
-      answers: ['1-3yrs', '4-6yrs', '7-10yrs', '10+yrs'],
+      answers: ['1-3 yrs', '4-6 yrs', '7-10 yrs', '10+ yrs'],
     },
     {
       question: 'How tall are the trees?',
@@ -43,20 +43,20 @@ const Questionnaire = () => {
       const concatenatedResponses = questions
         .map((question, index) => {
           if (question.inputType === 'text') {
-            // For text input, find the corresponding response
+            
             const response = responses.find((r) => r.question === question.question);
-            // Check if response and answer properties exist
+            
             return response ? `${response.question} : ${response.answer || ''}` : '';
           } else {
-            // For radio button input, use the selected answer
+            
             const selectedAnswer = responses[index] ? responses[index].answer : question.answers[0];
             return `${question.question} : ${selectedAnswer}`;
           }
         })
         .join('\n');
   
-      const whatsappMessageLink = `https://wa.me/+2766410876?text=${encodeURIComponent(concatenatedResponses)}`;
-      // You can also navigate to a different page or perform other actions here
+      const whatsappMessageLink = `https://wa.me/+27664108764?text=${encodeURIComponent(concatenatedResponses)}`;
+      
       window.open(whatsappMessageLink, '_blank');
     }
   };
