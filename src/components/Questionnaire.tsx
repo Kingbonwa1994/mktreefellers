@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { FormEvent } from 'react';
 import useQuestionnaireStore from '../store/questionnaireStore';
 
 const Questionnaire = () => {
@@ -33,25 +33,54 @@ const Questionnaire = () => {
     },
   ];
 
+ 
+
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       // Last question reached, save responses
-      addResponse(responses);
-
+      const concatenatedResponses = questions
+        .map((question, index) => {
+          if (question.inputType === 'text') {
+            // For text input, find the corresponding response
+            const response = responses.find((r) => r.question === question.question);
+            // Check if response and answer properties exist
+            return response ? `${response.question} : ${response.answer || ''}` : '';
+          } else {
+            // For radio button input, use the selected answer
+            const selectedAnswer = responses[index] ? responses[index].answer : question.answers[0];
+            return `${question.question} : ${selectedAnswer}`;
+          }
+        })
+        .join('\n');
+  
+      const whatsappMessageLink = `https://wa.me/+2766410876?text=${encodeURIComponent(concatenatedResponses)}`;
       // You can also navigate to a different page or perform other actions here
+      window.open(whatsappMessageLink, '_blank');
     }
   };
+  
+  
+  
 
-  const handleAnswer = (answer) => {
+  const handleAnswer = (answer: string) => {
     addResponse({ question: questions[currentQuestion].question, answer });
   };
 
   const handleLocationInput = (event) => {
     const location = event.target.value;
-    addResponse({ question: questions[currentQuestion].question, answer: location });
+    // Find the index of the "Share your location" question in the responses array
+    const locationIndex = responses.findIndex(response => response.question === 'Share your location:');
+    
+    // Update or add the response based on whether it already exists
+    if (locationIndex !== -1) {
+      responses[locationIndex] = { question: 'Share your location:', answer: location };
+    } else {
+      addResponse({ question: 'Share your location:', answer: location });
+    }
   };
+  
 
   return (
     <div className=" w-full mx-auto p-4">
@@ -65,17 +94,20 @@ const Questionnaire = () => {
         />
       ) : (
         <div className="space-y-4">
-          {questions[currentQuestion].answers.map((answer, index) => (
+        {questions &&
+          questions[currentQuestion].answers.map((answer, index) => (
             <label key={index} className="flex items-center space-x-2">
               <input
                 type="radio"
                 className="form-radio h-5 w-5 text-blue-500"
                 name="answer"
                 onChange={() => handleAnswer(answer)}
+                checked={answer === responses[currentQuestion]?.answer}
               />
               <span>{answer}</span>
             </label>
           ))}
+        
         </div>
       )}
       {currentQuestion !== questions.length - 1 ? (
