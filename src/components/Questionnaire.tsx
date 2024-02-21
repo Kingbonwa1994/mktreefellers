@@ -83,8 +83,9 @@ const Questionnaire = () => {
   
 
   return (
-    <div className=" w-full mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{questions[currentQuestion].question}</h1>
+    <div className="flex items-center justify-center h-full ">
+    <div className="w-full max-w-md p-4">
+      <h1 className="text-2xl text-white font-bold mb-4">{questions[currentQuestion].question}</h1>
       {currentQuestion === questions.length - 1 && questions[currentQuestion].inputType === 'text' ? (
         <input
           type="text"
@@ -119,6 +120,7 @@ const Questionnaire = () => {
           Send
         </button>
       )}
+    </div>
     </div>
   );
 };
