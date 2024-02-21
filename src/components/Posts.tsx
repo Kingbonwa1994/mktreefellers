@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import Loading from "./loading";
 import Post from "./Post";
@@ -44,7 +43,7 @@ export default async function PostList() {
   
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
         {posts.map((post: any) => (
           <Post key={post.uri} title={post.title} content={post.content} uri={post.uri}/>
         ))}
